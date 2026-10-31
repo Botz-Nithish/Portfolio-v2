@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+.claude/
+
+# Reference material: holds a nested git clone and a large screen recording
+refference/
