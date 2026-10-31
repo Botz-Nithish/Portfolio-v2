@@ -20,7 +20,7 @@ const WORDS = [
     "ZINGBOT", "WMS", "PIXELPIPE", "V-MEET", "NEURORYTHM", "SCHOLAR", "KALLOS", "FINSOL",
     "DISCOVER", "ARCHITECT", "BUILD", "SHIP",
     "LET’S", "TALK.",
-    "FULL-STACK", "DEVELOPMENT", "CREATIVE", "FRONT-END", "CLOUD", "& DATA", "AI", "INTEGRATION",
+    "LANGUAGES", "FRONT-END", "BACK-END", "& APIS", "DATA", "& CLOUD", "TOOLS", "& PROCESS",
     "MY LIFE", "JOURNEY", "PROJECTS", "PROCESS", "SKILLS",
   ].map((word) => [word, upright, heavy]),
   ["MEETS", italic, { wght: 300, wdth: 62 }],

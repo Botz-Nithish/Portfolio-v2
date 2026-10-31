@@ -243,10 +243,10 @@ Paper is deliberately a light grey and not pure white. The contour lines and whi
 | 3 | Journey | Changes per event | **The Drive.** "MY LIFE JOURNEY" lies on the road as raised letters and the camera drives over it. Then a solid road through 9 full-frame set pieces, each with its own ground, signature action and transition | 652 | 8,476 px |
 | 4 | Work | Paper and ink | **The shelf, then eight landings.** "MY PROJECTS": one spine per project, and the first opens into its plate. Each project then lands from depth on its own ground, leaves through its own motif | 606 | 7,878 px |
 | 5 | Process | Ink, cyan, paper, ink | **Sonar, then the Cube.** "MY PROCESS": a ping from the O finds the word, and the camera flies through the O into the radar. Then blueprint, faces slam on, numbers rise, lime launch | 324 | 4,212 px |
-| 6 | Skills | Paper | **The Keyboard.** One giant tilted keyboard: every tool is a labelled keycap. The shipped cube lands as Enter, rows light and type themselves, and the spacebar floods into Contact | 340 | 4,420 px |
+| 6 | Skills | Paper | **The Keyboard.** One giant tilted keyboard: 35 tools from the resume, each a labelled keycap, across 5 areas. The shipped cube lands as Enter, rows light and type themselves, and the spacebar floods into Contact | 398 | 5,174 px |
 | 7 | Contact | Lime | **Flood.** Rings ripple, closing type, mail button | 90 | 1,170 px |
 
-Total: 2,328 scrubbed frames, about 30,300 px at 13 px per frame. The reference page is 19,087 px.
+Total: 2,386 scrubbed frames, about 31,000 px at 13 px per frame. The reference page is 19,087 px.
 
 **The 9 set pieces and their way out:**
 
@@ -551,3 +551,12 @@ Eighth pass, 31 Oct:
 - `motion/presence.ts`: on another tab the title reads "Come back! 👀" and the eye in the favicon closes. Tested by simulating `document.hidden`, because headless Chrome does not hide background tabs.
 - The intro waits for a hidden tab to be seen, and pauses if the visitor leaves during it.
 - Repository: https://github.com/Botz-Nithish/Portfolio-v2. `refference/` and `.claude/` are ignored.
+
+Ninth pass, 31 Oct, from resume V6:
+
+- The resume is now the source of truth for facts. `public/cv.pdf` is V6, which replaces a copy showing CGPA 6.98 with 7.01.
+- Skills rebuilt from its competencies: Languages, Front-End, Back-End & APIs, Data & Cloud, Tools & Process, 35 keys. GSAP stays although the resume does not list it, because this site is built with it. Prisma and Supabase come from its project lines. Gemini and LLMs are gone from the keys: Gemini still appears under V-Meet.
+- Corrected against the resume: ZingBot capacity no longer claims it was scaled to 50+ clients, Zingbizz roles read Intern, NeuroRythm states its IEEE publication, SCHOLAR names the Journalist Profile Viewer, Kallos states two rounds, Finsol states the team of four, the Zingbizz timeline stop lists what was built, and CI/CD was dropped from Process.
+- Kept although the resume omits them: 2nd place at RESONANCE’25, running Xynthraa 26, and the birth date, all from v1.
+- The IEEE publication and the Claude Code certificate are not timeline stops. They sit in Work and Skills.
+- The PROJECTS spines still map to 8 projects. Film map: Skills 1892, Contact 2290, end 2386. Everything before Skills is unchanged.

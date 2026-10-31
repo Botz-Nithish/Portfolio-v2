@@ -1,8 +1,9 @@
 export const skills = [
-  { name: "Full-Stack Development", lines: ["FULL-STACK", "DEVELOPMENT"], tools: ["React", "Next.js", "Node", "NestJS", "FastAPI"], text: "End-to-end web apps: React & Next.js front-ends on Node, NestJS and FastAPI back-ends, typed and tested." },
-  { name: "Creative Front-End", lines: ["CREATIVE", "FRONT-END"], tools: ["GSAP", "SVG", "Motion"], text: "Interfaces with real motion and craft: GSAP and SVG. This site is the demo." },
-  { name: "Cloud & Data", lines: ["CLOUD", "& DATA"], tools: ["Azure", "PostgreSQL", "Prisma"], text: "Azure provisioning, PostgreSQL & Prisma data layers, and pipelines that cut load times measurably." },
-  { name: "AI Integration", lines: ["AI", "INTEGRATION"], tools: ["Gemini", "LLMs", "Analytics"], text: "Shipping LLM features end to end: Gemini assistants, summarization and analytics that earn their place." },
+  { name: "Languages", lines: ["LANGUAGES"], tools: ["Java", "Python", "C", "C++", "JavaScript"], text: "Java for core programming, OOP and data structures, Python for back-ends and signal processing, and C and C++ for the fundamentals." },
+  { name: "Front-End", lines: ["FRONT-END"], tools: ["React", "Next.js", "Redux", "Tailwind", "Bootstrap", "HTML5", "CSS3", "GSAP"], text: "Interfaces in React and Next.js, with Redux for state, Tailwind for styling and GSAP for motion. This site is the demo." },
+  { name: "Back-End & APIs", lines: ["BACK-END", "& APIS"], tools: ["Node.js", "NestJS", "Express", "FastAPI", "Flask", "REST"], text: "REST APIs and services on Node, NestJS, Express, FastAPI and Flask, up to role-based access across a 38-module system." },
+  { name: "Data & Cloud", lines: ["DATA", "& CLOUD"], tools: ["PostgreSQL", "MySQL", "SQL", "Prisma", "Supabase", "Azure", "Azure SQL"], text: "Relational data on PostgreSQL and MySQL, with Prisma and Supabase, and Azure VMs provisioned in one click for whole classes." },
+  { name: "Tools & Process", lines: ["TOOLS", "& PROCESS"], tools: ["Git", "GitHub", "VS Code", "Jupyter", "Axios", "Chart.js", "Agile", "Scrum", "Testing"], text: "Git and GitHub every day, Agile with daily scrums and code reviews, and certified in Claude Code in Action for AI-assisted development." },
 ];
 
 export const contact = {

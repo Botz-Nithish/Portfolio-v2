@@ -18,17 +18,17 @@ export const SKILLS_LENGTH = COLLAPSE + 46;
 
 const { ink: INK, paper: PAPER, lime: LIME, cyan: CYAN, slate: SLATE, grey: GREY } = COLOR;
 
-const LIT = [LIME, CYAN, LIME, CYAN];
+const LIT = [LIME, CYAN, LIME, CYAN, LIME];
 
 const LANDSCAPE = {
-  board: { x: 322, y: 424, w: 1176, pitch: 104, pad: 24, shear: 0.36, squash: 0.66, wall: 26, edge: 44 },
-  keyText: 33,
+  board: { x: 322, y: 424, w: 1176, pitch: 88, pad: 24, shear: 0.36, squash: 0.66, wall: 22, edge: 40 },
+  keyText: 27,
   copy: { x: 110, y: 112, wordMax: 88, wordFit: 660, label: 15, bodyX: 836, bodyY: 150, body: 25, line: 36, width: 650, typed: 19 },
   title: { x: 110, y: 330, size: 262, my: 104 },
 };
 const PORTRAIT = {
-  board: { x: 92, y: 850, w: 778, pitch: 112, pad: 22, shear: 0.14, squash: 0.74, wall: 24, edge: 40 },
-  keyText: 33,
+  board: { x: 96, y: 790, w: 786, pitch: 74, pad: 20, shear: 0.08, squash: 0.68, wall: 15, edge: 32 },
+  keyText: 27,
   copy: { x: 66, y: 190, wordMax: 96, wordFit: 770, label: 24, bodyX: 66, bodyY: 490, body: 31, line: 43, width: 770, typed: 25 },
   title: { x: 66, y: 620, size: 200, my: 120 },
 };
@@ -38,30 +38,45 @@ interface KeyDef {
   /** Share of the row's width. */
   width: number;
   kind: "tool" | "mark" | "enter" | "space";
-  row: number;
 }
 
-const tool = (label: string, row: number): KeyDef => ({ label: label.toUpperCase(), width: Math.max(1.5, label.length * 0.24), kind: "tool", row });
-const mark = (label: string, row: number, width = 0.86): KeyDef => ({ label, width, kind: "mark", row });
+const tool = (label: string): KeyDef => ({ label: label.toUpperCase(), width: Math.max(1.3, label.length * 0.23), kind: "tool" });
+const mark = (label: string, width = 0.86): KeyDef => ({ label, width, kind: "mark" });
+const ENTER: KeyDef = { label: "ENTER", width: 1.34, kind: "enter" };
 
-/** A row of the keyboard, and the skill it belongs to. */
-const landscapeRows = (): { skill: number; keys: KeyDef[] }[] => [
-  { skill: 0, keys: [mark("01", 0), ...skills[0].tools.map((t) => tool(t, 0)), { label: "ENTER", width: 1.34, kind: "enter", row: 0 }] },
-  { skill: 1, keys: [mark("02", 1, 1.05), ...skills[1].tools.map((t) => tool(t, 1)), mark("{", 1), mark("}", 1), mark("[", 1), mark("]", 1)] },
-  { skill: 2, keys: [mark("03", 2, 1.3), ...skills[2].tools.map((t) => tool(t, 2)), mark(";", 2), mark(":", 2), mark("'", 2)] },
-  { skill: 3, keys: [mark("04", 3, 1.05), ...skills[3].tools.map((t) => tool(t, 3)), mark("/", 3), mark("=>", 3, 1.05), mark("?", 3)] },
-];
+/** Spare punctuation keys, so short rows still read as a keyboard. */
+const SPARE = [["{", "}", ";"], [], ["/", "=>"], ["?"], []];
 
-/** Five tools do not fit one row at phone width, so the first skill takes two. */
-const portraitRows = (): { skill: number; keys: KeyDef[] }[] => {
-  const first = skills[0].tools;
-  return [
-    { skill: 0, keys: [...first.slice(0, 3).map((t) => tool(t, 0)), { label: "ENTER", width: 1.5, kind: "enter", row: 0 }] },
-    { skill: 0, keys: first.slice(3).map((t) => tool(t, 1)) },
-    { skill: 1, keys: skills[1].tools.map((t) => tool(t, 2)) },
-    { skill: 2, keys: skills[2].tools.map((t) => tool(t, 3)) },
-    { skill: 3, keys: skills[3].tools.map((t) => tool(t, 4)) },
-  ];
+const landscapeRows = () =>
+  skills.map((skill, i) => ({
+    skill: i,
+    keys: [mark(String(i + 1).padStart(2, "0"), 0.9), ...skill.tools.map(tool), ...SPARE[i].map((label) => mark(label)), ...(i === 0 ? [ENTER] : [])],
+  }));
+
+/** At phone width each skill wraps onto as many rows as its names need. */
+const portraitRows = () => {
+  const rows: { skill: number; keys: KeyDef[] }[] = [];
+  skills.forEach((skill, i) => {
+    let keys: KeyDef[] = [];
+    let used = 0;
+    for (const name of skill.tools) {
+      const key = tool(name);
+      if (keys.length && used + key.width > 5.4) {
+        rows.push({ skill: i, keys });
+        keys = [];
+        used = 0;
+      }
+      keys.push(key);
+      used += key.width;
+    }
+    rows.push({ skill: i, keys });
+    if (i === 0) keys.push(ENTER);
+  });
+  // A lone key across the whole board would not look like a keyboard.
+  for (const { keys } of rows) {
+    if (keys.length === 1) keys.push(mark("{"), mark("}"));
+  }
+  return rows;
 };
 
 export function buildSkills(frame: Frame, stage: Element) {
@@ -77,9 +92,8 @@ export function buildSkills(frame: Frame, stage: Element) {
   // ---- The board, drawn flat and tilted as a whole, so keys and their labels share one plane.
   const B = L.board;
   const rows = portrait ? portraitRows() : landscapeRows();
-  const bottom: KeyDef[] = portrait
-    ? [{ label: "LET’S TALK", width: 1, kind: "space", row: rows.length }]
-    : [mark("FN", rows.length, 0.9), mark("CTRL", rows.length, 1.1), { label: "LET’S TALK", width: 6.2, kind: "space", row: rows.length }, mark("ALT", rows.length, 1.1), mark("←", rows.length, 0.9), mark("→", rows.length, 0.9)];
+  const spacebar: KeyDef = { label: "LET’S TALK", width: portrait ? 1 : 6.2, kind: "space" };
+  const bottom = portrait ? [spacebar] : [mark("FN", 0.9), mark("CTRL", 1.1), spacebar, mark("ALT", 1.1), mark("←", 0.9), mark("→", 0.9)];
   const rowCount = rows.length + 1;
   const boardH = rowCount * B.pitch + B.pad * 2;
   const onScreen = (u: number, v: number): Pt => [B.x + u - v * B.shear, B.y + v * B.squash];
@@ -111,7 +125,7 @@ export function buildSkills(frame: Frame, stage: Element) {
     const base = dark ? "#2A2A2E" : PAPER;
     const top = el("path", { d, fill: base, stroke: INK, "stroke-width": 3.5 }, tap);
     el("path", { d: rrect(x + 9, y + 8, w - 18, keyH - 18, 9), fill: "none", stroke: dark ? SLATE : INK, "stroke-width": 1.4, opacity: 0.4 }, tap);
-    const size = def.kind === "mark" ? 24 : Math.min(L.keyText, ((w - 26) / (def.label.length * 0.68)));
+    const size = def.kind === "mark" ? 22 : Math.min(L.keyText, keyH * 0.42, (w - 28) / (def.label.length * 0.8));
     const label = text(tap, x + w / 2, y + keyH / 2 + size * 0.3, def.label, {
       size,
       family: dark ? MONO : undefined,
@@ -199,9 +213,10 @@ export function buildSkills(frame: Frame, stage: Element) {
   skills.forEach((skill, i) => {
     const at = beat(i);
     const lit = toolKeys(i);
+    const typeAt = (k: number) => at + 4 + k * Math.min(4, 36 / lit.length);
     lit.forEach((key, k) => {
-      film.set(key.top, { attr: { fill: LIT[i] } }, F(at + 4 + k * 4));
-      dip(key, at + 4 + k * 4);
+      film.set(key.top, { attr: { fill: LIT[i] } }, F(typeAt(k)));
+      dip(key, typeAt(k));
       film.set(key.top, { attr: { fill: key.base } }, F(at + STEP - 2));
     });
 
@@ -222,16 +237,21 @@ export function buildSkills(frame: Frame, stage: Element) {
     placed.forEach((word) => text(details, bodyX + word.x, bodyY + word.y, word.word, bodyStyle));
 
     // What the keys are typing.
-    const typedY = bodyY + placed.at(-1)!.y + C.line + 18;
+    let typedY = bodyY + placed.at(-1)!.y + C.line + 18;
     const charWidth = C.typed * 0.6;
-    let typedX = bodyX + charWidth * 2;
+    const typedStart = bodyX + charWidth * 2;
+    let typedX = typedStart;
     const typedLine = group(panel);
     text(typedLine, bodyX, typedY, ">", { size: C.typed, family: MONO, weight: 700 });
     lit.forEach((key, k) => {
+      if (typedX + key.def.label.length * charWidth > bodyX + C.width) {
+        typedX = typedStart;
+        typedY += C.typed * 1.5;
+      }
       const token = text(typedLine, typedX, typedY, key.def.label.toLowerCase(), { size: C.typed, family: MONO, weight: 600 });
       typedX += (key.def.label.length + 1) * charWidth;
       gsap.set(token, { autoAlpha: 0 });
-      film.set(token, { autoAlpha: 1 }, F(at + 4 + k * 4));
+      film.set(token, { autoAlpha: 1 }, F(typeAt(k)));
     });
     el("rect", { class: "blink", x: typedX - charWidth * 0.6, y: typedY - C.typed * 0.86, width: C.typed * 0.56, height: C.typed * 1.04, fill: INK }, typedLine);
 
