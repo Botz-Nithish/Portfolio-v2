@@ -46,19 +46,14 @@ const breathe = () =>
 
 export async function start() {
   const loader = window.__loader;
+  performance.mark("load:bundle");
   initPresence();
   lenis.stop();
-  loader.step("bundle", performance.now());
-  const fonts = [
-    ["archivo", '500 30px "Archivo Variable"'],
-    ["archivo italic", 'italic 500 30px "Archivo Variable"'],
-    ["jetbrains mono", '500 14px "JetBrains Mono Variable"'],
-  ];
+  loader.step();
   await Promise.all(
-    fonts.map(async ([name, font]) => {
-      const began = performance.now();
+    ['500 30px "Archivo Variable"', 'italic 500 30px "Archivo Variable"', '500 14px "JetBrains Mono Variable"'].map(async (font) => {
       await document.fonts.load(font);
-      loader.step(`font ${name}`, performance.now() - began);
+      loader.step();
     }),
   );
 
@@ -79,37 +74,41 @@ export async function start() {
   // Layouts differ by orientation, so a flip rebuilds the film.
   matchMedia("(orientation: portrait)").addEventListener("change", () => location.reload());
 
+  performance.mark("load:fonts");
   gsap.set(root, { "--chrome-ink": INK });
   // A timeline plays from the moment it exists, so each scene joins the paused film before the next yield.
   const film = gsap.timeline({ paused: true, defaults: { ease: "none" } });
-  const scene = async <T extends { film: gsap.core.Timeline }>(name: string, at: number, build: () => T) => {
-    const began = performance.now();
+  const scene = async <T extends { film: gsap.core.Timeline }>(at: number, build: () => T) => {
     const built = build();
     film.add(built.film, F(at));
-    loader.step(`scene ${name}`, performance.now() - began);
+    loader.step();
+    performance.mark(`load:built ${at}`);
     await breathe();
     return built;
   };
-  const hero = await scene("hero", 0, () => buildHero(frame, stage));
-  const about = await scene("about", hero.handoff, () => buildAbout(frame, stage, hero));
+  const hero = await scene(0, () => buildHero(frame, stage));
+  const about = await scene(hero.handoff, () => buildAbout(frame, stage, hero));
   const journeyAt = hero.handoff + ABOUT_LENGTH;
-  const journey = await scene("journey", journeyAt, () => buildJourney(frame, stage, root));
+  const journey = await scene(journeyAt, () => buildJourney(frame, stage, root));
   const projectsTitleAt = journeyAt + JOURNEY_LENGTH;
-  const projectsTitle = await scene("projects title", projectsTitleAt, () => buildProjectsTitle(frame, stage, firstPlate(portrait)));
+  const projectsTitle = await scene(projectsTitleAt, () => buildProjectsTitle(frame, stage, firstPlate(portrait)));
   const workAt = projectsTitleAt + PROJECTS_TITLE_LENGTH;
-  const work = await scene("work", workAt, () => buildWork(frame, stage, root));
+  const work = await scene(workAt, () => buildWork(frame, stage, root));
   const processTitleAt = workAt + WORK_LENGTH;
   const processAt = processTitleAt + PROCESS_TITLE_HOLD;
-  const process = await scene("process", processAt, () => buildProcess(frame, stage, root));
+  const process = await scene(processAt, () => buildProcess(frame, stage, root));
   // The title opens onto Process through the O, so it has to sit above it.
-  const processTitle = await scene("process title", processTitleAt, () => buildProcessTitle(frame, stage, radarCentre(portrait)));
+  const processTitle = await scene(processTitleAt, () => buildProcessTitle(frame, stage, radarCentre(portrait)));
   const skillsAt = processAt + PROCESS_LENGTH;
-  const skills = await scene("skills", skillsAt, () => buildSkills(frame, stage));
+  const skills = await scene(skillsAt, () => buildSkills(frame, stage));
   const contactAt = skillsAt + SKILLS_LENGTH;
-  const contact = await scene("contact", contactAt, () => buildContact(frame, stage));
+  const contact = await scene(contactAt, () => buildContact(frame, stage));
   stage.appendChild(hero.anchorLayer); // The dot rides above every scene.
 
   // Scene swaps sit inside the film, so jumps and reverse scrolling always land correctly.
+  // Only now: while scenes build, anything on screen gets laid out again on every measurement.
+  // The wall alone is 38 long rows of text, and showing it early cost seconds in real Chrome.
+  gsap.set(hero.wall, { display: "block", willChange: "transform" });
   gsap.set(hero.el, { display: "block" });
   gsap.set(hero.anchorLayer, { display: "block" });
   film.set(about.el, { display: "block" }, F(hero.handoff));
@@ -259,7 +258,9 @@ export async function start() {
     return;
   }
 
+  performance.mark("load:ready");
   await loader.finish();
+  performance.mark("load:gone");
   lenis.scrollTo(0, { immediate: true, force: true });
   // Nobody should miss the intro by having the tab in the background.
   if (document.hidden) await new Promise((seen) => document.addEventListener("visibilitychange", seen, { once: true }));

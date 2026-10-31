@@ -395,9 +395,7 @@ export function buildHero(frame: Frame, stage: Element) {
     film.to(letter.outer, { scale: 1.5, duration: F(20), ease: "power2.in" }, F(DIVE_START + 2 + i));
   });
 
-  gsap.set(wall, { display: "block", willChange: "transform" });
-
-  return { el: svg, anchorLayer, anchorOuter, anchorInner, dotCentre: [Cx, Cy] as Pt, dotRadius, film, boot, look, handoff: HANDOFF };
+  return { el: svg, wall, anchorLayer, anchorOuter, anchorInner, dotCentre: [Cx, Cy] as Pt, dotRadius, film, boot, look, handoff: HANDOFF };
 }
 
 export type Hero = ReturnType<typeof buildHero>;

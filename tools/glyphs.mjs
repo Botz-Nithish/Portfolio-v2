@@ -72,7 +72,19 @@ function eyeDefs() {
     `<clipPath id="eye-clip" clipPathUnits="objectBoundingBox"><path transform="${scale}" d="${outer}" /></clipPath>`,
     `<path id="eye-line" transform="translate(${-x} ${-y})" d="${outer}" />`,
     `<!-- eye: ${w} ${h} -->`,
+    ...counterGlyphs(),
   ].join("\n        ");
+}
+
+/** The preloader's number: each digit centred in its own cell, so the count does not jitter. */
+function counterGlyphs() {
+  const inst = upright.getVariation(heavy);
+  const k = 1000 / upright.unitsPerEm;
+  return [..."0123456789%"].map((ch) => {
+    const glyph = inst.layout(ch).glyphs[0];
+    const shift = (glyph.path.bbox.minX + glyph.path.bbox.maxX) / 2;
+    return `<path id="count-${ch === "%" ? "percent" : ch}" d="${toD(glyph.path.translate(-shift, 0), k)}" />`;
+  });
 }
 
 const html = resolve(root, "index.html");

@@ -2,7 +2,8 @@
 interface Loader {
   /** How much bigger than its place in the title the loader's O is drawn. */
   layout: { zoom: number };
-  step(name: string, ms?: number): void;
+  /** One more milestone reached. */
+  step(): void;
   /** Fills the O and resolves on its last frame, which the intro picks up from. */
   finish(): Promise<void>;
   /** Fades out without filling, for visits that skip the intro. */

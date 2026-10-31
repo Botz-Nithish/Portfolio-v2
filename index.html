@@ -49,7 +49,7 @@
         height: 140%;
         background: #c8ff00;
         transform: translate3d(0, 100%, 0);
-        transition: transform 0.5s cubic-bezier(0.33, 0, 0.13, 1);
+        transition: transform 0.5s linear;
         will-change: transform;
       }
       #loader-wave {
@@ -73,7 +73,7 @@
         width: 100%;
         height: 100%;
         overflow: visible;
-        transition: opacity 0.3s linear;
+        transition: opacity 0.1s linear;
       }
       #loader-slot,
       #loader-dot {
@@ -107,19 +107,16 @@
           transform: rotate(-32deg) translate3d(var(--reach), 0, 0);
         }
       }
-      /* System mono: the webfonts are still loading, and a swap would jump. */
-      #loader-step {
+      #loader-count {
         position: absolute;
-        top: calc(50% + var(--eye-h) / 2 + 26px);
-        left: 0;
-        width: 100%;
-        margin: 0;
-        font: 500 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        color: #9a9a95;
-        text-align: center;
-        transition: opacity 0.16s linear;
+        top: calc(50% + var(--eye-h) / 2 + 24px);
+        left: 50%;
+        width: 150px;
+        height: 34px;
+        margin-left: -75px;
+        transition: opacity 0.1s linear;
       }
-      #loader.is-done #loader-step,
+      #loader.is-done #loader-count,
       #loader.is-done #loader-rim {
         opacity: 0;
       }
@@ -145,6 +142,17 @@
         <clipPath id="eye-clip" clipPathUnits="objectBoundingBox"><path transform="scale(0.001089 0.001404) translate(-45 700)" d="M504 12Q363 12 260 -31Q157 -74 101 -153.5Q45 -233 45 -344Q45 -455 101 -535Q157 -615 260 -657.5Q363 -700 504 -700Q646 -700 748.5 -657.5Q851 -615 907 -535Q963 -455 963 -344Q963 -233 907 -153.5Q851 -74 748.5 -31Q646 12 504 12Z" /></clipPath>
         <path id="eye-line" transform="translate(-45 700)" d="M504 12Q363 12 260 -31Q157 -74 101 -153.5Q45 -233 45 -344Q45 -455 101 -535Q157 -615 260 -657.5Q363 -700 504 -700Q646 -700 748.5 -657.5Q851 -615 907 -535Q963 -455 963 -344Q963 -233 907 -153.5Q851 -74 748.5 -31Q646 12 504 12Z" />
         <!-- eye: 918 712 -->
+        <path id="count-0" d="M0.5 12Q-104.5 12 -175 -14.5Q-245.5 -41 -287 -89Q-328.5 -137 -346.5 -202Q-364.5 -267 -364.5 -344Q-364.5 -421 -346.5 -486Q-328.5 -551 -287.5 -599Q-246.5 -647 -176 -673.5Q-105.5 -700 -0.5 -700Q104.5 -700 175 -673.5Q245.5 -647 287 -599Q328.5 -551 346.5 -486Q364.5 -421 364.5 -344Q364.5 -267 346.5 -202Q328.5 -137 287.5 -89Q246.5 -41 176 -14.5Q105.5 12 0.5 12ZM0.5 -129Q51.5 -129 80.5 -150Q109.5 -171 121.5 -214Q133.5 -257 133.5 -322L133.5 -369Q133.5 -434 121.5 -476.5Q109.5 -519 80.5 -539.5Q51.5 -560 0.5 -560Q-49.5 -560 -79 -539.5Q-108.5 -519 -121 -476.5Q-133.5 -434 -133.5 -369L-133.5 -322Q-133.5 -257 -121 -214Q-108.5 -171 -79 -150Q-49.5 -129 0.5 -129Z" />
+        <path id="count-1" d="M-320.5 0L-320.5 -168L-102.5 -168L-102.5 -465L-320.5 -465L-320.5 -581Q-261.5 -584 -194.5 -600Q-127.5 -616 -63.5 -640Q0.5 -664 49.5 -689L121.5 -689L121.5 -168L320.5 -168L320.5 0Z" />
+        <path id="count-2" d="M-356 0L-356 -49Q-356 -98 -330.5 -138Q-305 -178 -263 -211.5Q-221 -245 -172 -275Q-123 -305 -75 -335Q-27 -365 15.5 -389Q58 -413 84.5 -436.5Q111 -460 111 -486Q111 -506 99 -522Q87 -538 61 -547Q35 -556 -9 -556Q-48 -556 -75.5 -544Q-103 -532 -117.5 -511.5Q-132 -491 -132 -465L-132 -445L-353 -445Q-354 -451 -354 -456.5Q-354 -462 -354 -467Q-354 -538 -313 -590Q-272 -642 -190 -671Q-108 -700 15 -700Q92 -700 153 -687Q214 -674 257.5 -648Q301 -622 324 -583Q347 -544 347 -493Q347 -445 320 -405Q293 -365 249 -331.5Q205 -298 154 -270.5Q103 -243 54 -220Q40 -214 23 -206Q6 -198 -10 -190.5Q-26 -183 -37 -177L356 -177L356 0Z" />
+        <path id="count-3" d="M1.5 12Q-123.5 12 -205 -15.5Q-286.5 -43 -325.5 -89Q-364.5 -135 -364.5 -190L-364.5 -211L-146.5 -211L-146.5 -192Q-146.5 -164 -114 -146.5Q-81.5 -129 -14.5 -129Q64.5 -129 97 -153Q129.5 -177 129.5 -217Q129.5 -240 116.5 -255Q103.5 -270 82.5 -277.5Q61.5 -285 36.5 -285L-63.5 -285L-63.5 -416L16.5 -416Q41.5 -416 62.5 -423.5Q83.5 -431 96.5 -446Q109.5 -461 109.5 -484Q109.5 -505 96 -522.5Q82.5 -540 55 -550.5Q27.5 -561 -14.5 -561Q-45.5 -561 -71 -552Q-96.5 -543 -111.5 -528.5Q-126.5 -514 -126.5 -497L-126.5 -483L-336.5 -483L-336.5 -512Q-336.5 -564 -296.5 -606.5Q-256.5 -649 -180 -674.5Q-103.5 -700 6.5 -700Q115.5 -700 189.5 -675.5Q263.5 -651 301.5 -609Q339.5 -567 339.5 -513Q339.5 -476 323.5 -445.5Q307.5 -415 279.5 -393.5Q251.5 -372 214.5 -361L214.5 -357Q285.5 -343 325 -298.5Q364.5 -254 364.5 -187Q364.5 -132 325.5 -87Q286.5 -42 206 -15Q125.5 12 1.5 12Z" />
+        <path id="count-4" d="M34.5 0L34.5 -137L-386.5 -137L-386.5 -298Q-345.5 -345 -300.5 -409.5Q-255.5 -474 -215 -549Q-174.5 -624 -146.5 -700L93.5 -700Q88.5 -668 67 -626Q45.5 -584 13.5 -537.5Q-18.5 -491 -56 -445.5Q-93.5 -400 -131.5 -360.5Q-169.5 -321 -203.5 -292L34.5 -292L34.5 -430Q50.5 -448 69.5 -474Q88.5 -500 106.5 -529Q124.5 -558 139 -585.5Q153.5 -613 161.5 -634L260.5 -634L260.5 -292L386.5 -292L386.5 -137L260.5 -137L260.5 0Z" />
+        <path id="count-5" d="M14 12Q-111 12 -195.5 -17.5Q-280 -47 -323 -99.5Q-366 -152 -366 -222L-148 -222Q-146 -192 -129 -171Q-112 -150 -81.5 -139.5Q-51 -129 -9 -129Q35 -129 66.5 -140.5Q98 -152 115 -174.5Q132 -197 132 -230Q132 -263 115 -285.5Q98 -308 66.5 -319.5Q35 -331 -9 -331Q-39 -331 -64 -325.5Q-89 -320 -107 -309Q-125 -298 -136 -281L-329 -303L-293 -688L302 -688L302 -515L-121 -515L-132 -413Q-116 -423 -86.5 -433.5Q-57 -444 -17.5 -451.5Q22 -459 67 -459Q159 -459 226 -432Q293 -405 329.5 -353Q366 -301 366 -225Q366 -157 323 -103.5Q280 -50 201 -19Q122 12 14 12Z" />
+        <path id="count-6" d="M4 12Q-88 12 -157.5 -8.5Q-227 -29 -274 -70.5Q-321 -112 -345 -176Q-369 -240 -369 -327Q-369 -427 -345 -498Q-321 -569 -274 -613.5Q-227 -658 -157.5 -679Q-88 -700 4 -700Q106 -700 183 -673.5Q260 -647 303.5 -595.5Q347 -544 347 -468L129 -468Q129 -499 113.5 -519.5Q98 -540 70.5 -550Q43 -560 7 -560Q-50 -560 -80.5 -540.5Q-111 -521 -122.5 -483Q-134 -445 -134 -387Q-105 -407 -70.5 -418.5Q-36 -430 -0.5 -434.5Q35 -439 64 -439Q149 -439 218 -415Q287 -391 328 -344Q369 -297 369 -228Q369 -151 324 -97.5Q279 -44 197 -16Q115 12 4 12ZM2 -129Q44 -129 74.5 -139.5Q105 -150 121.5 -170.5Q138 -191 138 -221Q138 -252 121.5 -272Q105 -292 74.5 -302.5Q44 -313 2 -313Q-39 -313 -69.5 -302.5Q-100 -292 -116.5 -272Q-133 -252 -133 -221Q-133 -191 -116.5 -170.5Q-100 -150 -69.5 -139.5Q-39 -129 2 -129Z" />
+        <path id="count-7" d="M-207.5 0Q-207.5 -71 -187 -139.5Q-166.5 -208 -130 -272.5Q-93.5 -337 -43.5 -397Q6.5 -457 64.5 -512L-362.5 -512L-362.5 -688L362.5 -688L362.5 -593Q315.5 -546 270.5 -496.5Q225.5 -447 186.5 -395.5Q147.5 -344 118.5 -289.5Q89.5 -235 73 -177.5Q56.5 -120 56.5 -59L56.5 0Z" />
+        <path id="count-8" d="M0 12Q-114 12 -198.5 -11Q-283 -34 -329.5 -79Q-376 -124 -376 -189Q-376 -251 -338 -288Q-300 -325 -239 -349Q-302 -385 -323 -419.5Q-344 -454 -344 -497Q-344 -563 -298 -608Q-252 -653 -173.5 -676.5Q-95 -700 0 -700Q96 -700 174 -676.5Q252 -653 298 -608Q344 -563 344 -497Q344 -454 323 -419.5Q302 -385 239 -349Q301 -325 338.5 -288Q376 -251 376 -189Q376 -124 329.5 -79Q283 -34 199 -11Q115 12 0 12ZM0 -129Q70 -129 105.5 -149Q141 -169 141 -206Q141 -243 105.5 -263Q70 -283 0 -283Q-70 -283 -105 -263Q-140 -243 -140 -206Q-140 -169 -105 -149Q-70 -129 0 -129ZM0 -418Q70 -418 105.5 -437Q141 -456 141 -489Q141 -522 105.5 -541Q70 -560 0 -560Q-70 -560 -105 -541Q-140 -522 -140 -489Q-140 -456 -105 -437Q-70 -418 0 -418Z" />
+        <path id="count-9" d="M-4 12Q-105 12 -182.5 -14.5Q-260 -41 -303.5 -92.5Q-347 -144 -347 -220L-129 -220Q-129 -189 -113.5 -168.5Q-98 -148 -70.5 -138Q-43 -128 -7 -128Q50 -128 80.5 -147.5Q111 -167 122.5 -205.5Q134 -244 134 -301Q106 -281 71 -269.5Q36 -258 1 -253.5Q-34 -249 -64 -249Q-149 -249 -218 -273Q-287 -297 -328 -344.5Q-369 -392 -369 -460Q-369 -537 -324 -590.5Q-279 -644 -197 -672Q-115 -700 -4 -700Q88 -700 157.5 -679.5Q227 -659 274 -617.5Q321 -576 345 -512Q369 -448 369 -361Q369 -261 345 -190Q321 -119 274 -74.5Q227 -30 157.5 -9Q88 12 -4 12ZM-2 -375Q40 -375 70 -385.5Q100 -396 116.5 -416.5Q133 -437 133 -467Q133 -498 116.5 -518Q100 -538 70 -548.5Q40 -559 -2 -559Q-43 -559 -74 -548.5Q-105 -538 -121.5 -518Q-138 -498 -138 -467Q-138 -437 -121.5 -416.5Q-105 -396 -74.5 -385.5Q-44 -375 -2 -375Z" />
+        <path id="count-percent" d="M-317.5 0L199.5 -687L319.5 -687L-195.5 0ZM-313.5 -342Q-391.5 -342 -439.5 -365.5Q-487.5 -389 -510 -430Q-532.5 -471 -532.5 -521Q-532.5 -572 -510 -612.5Q-487.5 -653 -439.5 -676.5Q-391.5 -700 -313.5 -700Q-235.5 -700 -187 -676.5Q-138.5 -653 -116.5 -612.5Q-94.5 -572 -94.5 -521Q-94.5 -471 -116.5 -430Q-138.5 -389 -187 -365.5Q-235.5 -342 -313.5 -342ZM-313.5 -426Q-271.5 -426 -254 -450.5Q-236.5 -475 -236.5 -511L-236.5 -531Q-236.5 -555 -244 -574.5Q-251.5 -594 -268.5 -605Q-285.5 -616 -313.5 -616Q-355.5 -616 -373 -591.5Q-390.5 -567 -390.5 -531L-390.5 -511Q-390.5 -475 -373 -450.5Q-355.5 -426 -313.5 -426ZM313.5 12Q235.5 12 187.5 -11.5Q139.5 -35 117 -76Q94.5 -117 94.5 -167Q94.5 -218 117 -258.5Q139.5 -299 188 -322.5Q236.5 -346 314.5 -346Q392.5 -346 440.5 -322.5Q488.5 -299 510.5 -258.5Q532.5 -218 532.5 -167Q532.5 -117 510.5 -76Q488.5 -35 440 -11.5Q391.5 12 313.5 12ZM313.5 -72Q355.5 -72 373 -96.5Q390.5 -121 390.5 -157L390.5 -177Q390.5 -201 383 -220Q375.5 -239 358.5 -250.5Q341.5 -262 313.5 -262Q271.5 -262 254 -237.5Q236.5 -213 236.5 -177L236.5 -157Q236.5 -121 254 -96.5Q271.5 -72 313.5 -72Z" />
         <!-- eye:end -->
       </defs>
     </svg>
@@ -158,11 +166,11 @@
         <div id="loader-slot"></div>
         <div id="loader-dot"></div>
       </div>
-      <p id="loader-step" aria-hidden="true"></p>
+      <canvas id="loader-count" aria-hidden="true"></canvas>
     </div>
 
     <script>
-      // Real progress, set from milestones. The script only picks targets: the browser animates them.
+      // Real progress, set from milestones. The script only picks targets: the browser and a worker animate them.
       (function () {
         // A reload starts the film over: the page would otherwise reopen wherever it was left.
         history.scrollRestoration = "manual";
@@ -171,7 +179,7 @@
         var eye = document.getElementById("loader-eye");
         var level = document.getElementById("loader-level");
         var dot = document.getElementById("loader-dot");
-        var step = document.getElementById("loader-step");
+        var count = document.getElementById("loader-count");
         var params = new URLSearchParams(location.search);
 
         // Same safe frame and type size as the scenes, so this O lands exactly on the intro's first frame.
@@ -202,47 +210,154 @@
             return Promise.resolve();
           },
           remove: function () {
+            if (worker) worker.terminate();
             root.remove();
           },
         };
         window.__loader = api;
+        var worker;
         if (params.has("noboot")) {
           api.remove();
           return;
         }
 
-        var fill = function (progress, seconds) {
+        /**
+         * Draws the number and walks it up to each new target at a steady pace, one integer at a time.
+         * It runs inside a worker, where a busy main thread cannot hold it up, so it stands alone:
+         * this function's source is what the worker is given.
+         */
+        function countUp(canvas, glyphs, calm) {
+          var CELL = 830;
+          var context = canvas.getContext("2d");
+          var paths = {};
+          for (var key in glyphs) paths[key] = new Path2D(glyphs[key]);
+          var shown = 0;
+          var target = 0;
+          var pace = 0;
+          var last = 0;
+          var ticking = false;
+          var nextFrame =
+            typeof requestAnimationFrame === "function"
+              ? requestAnimationFrame
+              : function (run) {
+                  setTimeout(function () {
+                    run(performance.now());
+                  }, 16);
+                };
+          function draw() {
+            var value = String(Math.min(Math.floor(shown + 0.02), 100));
+            var scale = canvas.height / 760;
+            var x = canvas.width / 2 - ((value.length * CELL + 1000) / 2) * scale;
+            var baseline = canvas.height - 20 * scale;
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = "#C8FF00";
+            for (var i = 0; i <= value.length; i++) {
+              var ch = i < value.length ? value[i] : "percent";
+              var size = i < value.length ? 1 : 0.62;
+              context.setTransform(scale * size, 0, 0, scale * size, x + (CELL / 2 + (ch === "percent" ? 90 : 0)) * scale, baseline);
+              context.fill(paths[ch]);
+              x += CELL * scale;
+            }
+          }
+          function tick(now) {
+            shown = Math.min(target, shown + ((now - last) / 1000) * pace);
+            last = now;
+            draw();
+            if (shown < target) nextFrame(tick);
+            else ticking = false;
+          }
+          draw();
+          return function (value, speed) {
+            target = value;
+            pace = speed;
+            if (calm) {
+              shown = value;
+              draw();
+            } else if (!ticking && shown < target) {
+              ticking = true;
+              last = performance.now();
+              nextFrame(tick);
+            }
+          };
+        }
+
+        var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var glyphs = {};
+        "0123456789".split("").concat("percent").forEach(function (key) {
+          glyphs[key] = document.getElementById("count-" + key).getAttribute("d");
+        });
+        var ratio = Math.min(devicePixelRatio || 1, 3);
+        count.width = 150 * ratio;
+        count.height = 34 * ratio;
+        var report;
+        try {
+          var offscreen = count.transferControlToOffscreen();
+          worker = new Worker(
+            URL.createObjectURL(
+              new Blob(["var set;var make=" + countUp + ";onmessage=function(e){if(e.data.canvas)set=make(e.data.canvas,e.data.glyphs,e.data.calm);else set(e.data.value,e.data.pace)}"], {
+                type: "text/javascript",
+              }),
+            ),
+          );
+          worker.postMessage({ canvas: offscreen, glyphs: glyphs, calm: calm }, [offscreen]);
+          report = function (value, speed) {
+            worker.postMessage({ value: value, pace: speed });
+          };
+        } catch (error) {
+          // No worker canvas here. It still counts, it just shares the main thread.
+          report = countUp(count, glyphs, calm);
+        }
+
+        // The level and the number both travel at this pace, so the O always shows what the number says.
+        var PACE = 125;
+        var from = 0;
+        var goal = 0;
+        var pace = 1;
+        var moved = performance.now();
+        var fill = function (percent, speed) {
+          var now = performance.now();
+          from = Math.min(goal, from + ((now - moved) / 1000) * pace);
+          moved = now;
+          goal = percent;
+          pace = speed;
+          var seconds = calm ? 0 : Math.max(percent - from, 0) / speed;
           level.style.transitionDuration = seconds + "s";
-          level.style.transform = "translate3d(0," + ((1 - progress) * height - progress * 18).toFixed(1) + "px,0)";
+          level.style.transform = "translate3d(0," + ((1 - percent / 100) * height - (percent / 100) * 18).toFixed(1) + "px,0)";
+          report(percent, speed);
+          return seconds;
         };
         requestAnimationFrame(function () {
           // Nothing is measurable until the bundle reports in, so the level only creeps.
-          fill(0.16, 1.2);
+          fill(16, 40);
         });
 
         var began = performance.now();
-        var MIN = 1100;
+        var MIN = 500;
         var done = 0;
         var total = 13;
 
-        api.step = function (name, ms) {
+        api.step = function () {
           done++;
-          fill(0.16 + (done / total) * 0.72, 0.5);
-          step.textContent = name + (ms === undefined ? "" : " " + Math.round(ms) + "ms");
+          fill(16 + (done / total) * 72, PACE);
         };
         api.finish = function () {
           return new Promise(function (resolve) {
             setTimeout(function () {
-              fill(1, 0.6);
-              root.classList.add("is-done");
+              var seconds = fill(100, PACE);
               // The pupil comes back to the centre from wherever it was looking.
-              var from = getComputedStyle(dot).transform;
+              var look = getComputedStyle(dot).transform;
               dot.style.animation = "none";
-              dot.style.transform = from;
+              dot.style.transform = look;
               dot.getBoundingClientRect();
-              dot.style.transition = "transform 0.4s cubic-bezier(0.33, 0, 0.13, 1)";
+              dot.style.transition = "transform 0.22s cubic-bezier(0.33, 0, 0.13, 1)";
               dot.style.transform = "none";
-              if (!params.has("hold")) setTimeout(resolve, 700);
+              // 100 stays up for a moment, then clears so the intro's first frame is just the O.
+              var held = (seconds + 0.12) * 1000;
+              setTimeout(function () {
+                root.classList.add("is-done");
+              }, held);
+              if (!params.has("hold")) setTimeout(resolve, held + 110);
             }, Math.max(0, began + MIN - performance.now()));
           });
         };
