@@ -560,3 +560,5 @@ Ninth pass, 31 Oct, from resume V6:
 - Kept although the resume omits them: 2nd place at RESONANCE’25, running Xynthraa 26, and the birth date, all from v1.
 - The IEEE publication and the Claude Code certificate are not timeline stops. They sit in Work and Skills.
 - The PROJECTS spines still map to 8 projects. Film map: Skills 1892, Contact 2290, end 2386. Everything before Skills is unchanged.
+
+Deployment: `.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main`. It skips until Pages is enabled in the repo settings with GitHub Actions as the source. The site will be at https://botz-nithish.github.io/Portfolio-v2/. `base: "./"` in `vite.config.ts` makes that sub-path work.
