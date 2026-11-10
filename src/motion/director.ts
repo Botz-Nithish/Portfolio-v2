@@ -5,6 +5,10 @@ import { lenis } from "./scroll";
 import { F, FPS } from "./eases";
 import { initCase } from "./case";
 import { initJumps } from "./chrome";
+import { initNav, type NavItem } from "./nav";
+import { journey as events } from "../content/journey";
+import { phases } from "../content/process";
+import { skills as areas } from "../content/skills";
 import { initCursor } from "./cursor";
 import { initPresence } from "./presence";
 import { stopIdle } from "./kit";
@@ -134,16 +138,41 @@ export async function start() {
   film.set(contact.el, { display: "block" }, F(contactAt));
   film.set(skills.el, { display: "none" }, F(contactAt));
 
-  const scenes = [
-    { name: "Hero", from: 0 },
-    { name: "About", from: hero.handoff },
-    { name: "Journey", from: journeyAt },
-    { name: "Work", from: projectsTitleAt },
-    { name: "Process", from: processTitleAt },
-    { name: "Skills", from: skillsAt },
-    { name: "Contact", from: contactAt },
-  ];
   const frames = Math.round(film.duration() * FPS);
+  // Plain names, so visitors know what each section is. Each jump lands on a still, never mid-seam.
+  const sections: NavItem[] = [
+    { key: "top", label: "Start", caption: "Code meets craft", from: 0, target: 0 },
+    { key: "about", label: "About me", caption: "Who I am", from: hero.handoff, target: hero.handoff + ABOUT_BUILT },
+    {
+      key: "journey",
+      label: "My journey",
+      caption: `${events.length} stops · ${events[0].year}–${events.at(-1)!.year}`,
+      from: journeyAt,
+      target: journeyAt + journey.title,
+    },
+    {
+      key: "projects",
+      label: "My projects",
+      caption: `${projects.length} projects`,
+      from: projectsTitleAt,
+      target: projectsTitleAt + projectsTitle.title,
+    },
+    {
+      key: "process",
+      label: "My process",
+      caption: `${phases.length} steps`,
+      from: processTitleAt,
+      target: processTitleAt + processTitle.title,
+    },
+    {
+      key: "skills",
+      label: "My skills",
+      caption: `${areas.reduce((sum, area) => sum + area.tools.length, 0)} tools`,
+      from: skillsAt,
+      target: skillsAt + skills.title,
+    },
+    { key: "contact", label: "Contact", caption: "Let’s talk", from: contactAt, target: frames },
+  ];
   filmEl.style.height = `calc(100lvh + ${frames * PX_PER_FRAME}px)`;
 
   const hud = document.querySelector<HTMLElement>("#hud")!;
@@ -168,7 +197,10 @@ export async function start() {
   if (calm) stopIdle();
   if (calm) filmEl.style.height = `calc(100lvh + ${stills.length * 460}px)`;
 
+  const nav = initNav({ items: sections, frames, now: () => film.time() * FPS, seek: (f) => seek(f), calm });
+
   let past = false;
+  let shown = -1;
   const trigger = ScrollTrigger.create({
     trigger: filmEl,
     start: "top top",
@@ -187,7 +219,11 @@ export async function start() {
         journey.live(now - journeyAt);
         skills.live(now - skillsAt);
       }
-      label.textContent = scenes.filter((scene) => now >= scene.from).at(-1)!.name;
+      const section = nav.update(now);
+      if (section !== shown) {
+        shown = section;
+        label.textContent = sections[section].label;
+      }
       if (!hud.hidden) hud.textContent = `f ${Math.round(now)} / ${frames}`;
     },
   });
@@ -207,7 +243,14 @@ export async function start() {
   initCursor();
   addEventListener("pointermove", (e) => hero.look(e.clientX, e.clientY, boot.progress() === 1 && film.time() < F(26)));
   const cases = initCase();
-  initJumps({ top: 0, about: hero.handoff + ABOUT_BUILT, work: workAt + work.stops[0], contact: frames }, seek);
+  initJumps(
+    {
+      ...Object.fromEntries(sections.map((s) => [s.key, s.target])),
+      work: workAt + work.stops[0], // The hero CTA goes straight to the first project.
+    },
+    seek,
+    calm,
+  );
 
   // Debug handles for the QA contact sheets.
   Object.assign(window, {
@@ -255,6 +298,7 @@ export async function start() {
       cases.open(project, innerWidth / 2, innerHeight / 2);
     }
     await loader.dismiss();
+    nav.enable();
     return;
   }
 
@@ -267,7 +311,10 @@ export async function start() {
   document.addEventListener("visibilitychange", () => {
     if (boot.progress() < 1) boot.paused(document.hidden);
   });
-  boot.eventCallback("onComplete", () => lenis.start());
+  boot.eventCallback("onComplete", () => {
+    lenis.start();
+    nav.enable();
+  });
   const hurry = () => boot.timeScale(5);
   addEventListener("wheel", hurry, { once: true, passive: true });
   addEventListener("touchstart", hurry, { once: true, passive: true });

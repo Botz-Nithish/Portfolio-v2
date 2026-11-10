@@ -3,6 +3,7 @@ import "@fontsource-variable/archivo/standard-italic.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./styles/tokens.css";
 import "./styles/base.css";
+import "./styles/nav.css";
 import { start } from "./motion/director";
 
 start();

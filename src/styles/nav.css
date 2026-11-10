@@ -1,0 +1,541 @@
+/* The eye: the O of CODE as a button. Centred on the top bar, with its label hung off to the right. */
+.bar__eye {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  padding: 6px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+
+.bar__eye:disabled {
+  cursor: default;
+}
+
+.bar__eye.is-waiting {
+  visibility: hidden;
+}
+
+.bar__eye:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.bar__eye-label {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.eye {
+  display: block;
+  width: 34px;
+  height: auto;
+  overflow: visible;
+  transition: transform 0.35s cubic-bezier(0.33, 0, 0.13, 1);
+}
+
+.bar__eye:not(:disabled):hover .eye,
+.bar__eye:focus-visible .eye {
+  transform: scale(1.14);
+}
+
+.eye__o {
+  fill: var(--lime);
+  stroke: currentColor;
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+.eye__slot {
+  fill: var(--ink);
+}
+
+.eye__pupil {
+  fill: var(--cyan);
+}
+
+/* The slot, grown past the camera. It and the index share one ink, so the swap is invisible. */
+.nav-iris {
+  position: fixed;
+  z-index: 28;
+  display: none;
+  background: var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1.5px var(--lime);
+  pointer-events: none;
+}
+
+/* The index */
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  color: var(--paper);
+  background: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.nav[hidden] {
+  display: none;
+}
+
+.nav__bar {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.nav__close {
+  color: var(--paper);
+}
+
+.nav__list {
+  display: grid;
+  flex: 1;
+  grid-auto-rows: minmax(64px, 1fr);
+  margin: 0;
+  padding: 0 28px;
+  list-style: none;
+}
+
+.nav__list li {
+  border-top: 1px solid color-mix(in srgb, var(--slate) 35%, transparent);
+}
+
+.nav__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) clamp(84px, 9vw, 132px);
+  gap: clamp(12px, 2vw, 32px);
+  align-items: center;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.nav__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--slate);
+  transition: color 0.25s;
+}
+
+.nav__name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: baseline;
+  min-width: 0;
+  transition: transform 0.45s cubic-bezier(0.33, 0, 0.13, 1);
+}
+
+.nav__title {
+  font-size: clamp(26px, min(5vw, 6.2vh), 78px);
+  font-stretch: 125%;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+
+.nav__caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--slate);
+}
+
+.nav__here {
+  display: none;
+  align-self: center;
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--lime);
+  border-radius: 999px;
+}
+
+.nav__item[aria-current] .nav__here {
+  display: inline-block;
+}
+
+.nav__item[aria-current] .nav__num {
+  color: var(--lime);
+}
+
+.nav__art {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  color: var(--paper);
+}
+
+.nav__line {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s cubic-bezier(0.33, 0, 0.13, 1);
+  pointer-events: none;
+}
+
+.nav__block {
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+.nav__item.is-hot .nav__title {
+  color: var(--lime);
+}
+
+.nav__item.is-hot .nav__name {
+  transform: translateX(18px);
+}
+
+.nav__item.is-hot .nav__line {
+  transform: scaleX(1);
+}
+
+.nav__item:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: -2px;
+}
+
+/* The film, with every section at its true length. */
+.nav__rail {
+  flex: none;
+  padding: 34px 28px max(30px, env(safe-area-inset-bottom));
+}
+
+.nav__track {
+  position: relative;
+  display: flex;
+  gap: 3px;
+  height: 8px;
+}
+
+.nav__seg {
+  position: relative;
+  flex-basis: 0;
+  border: 1.5px solid var(--slate);
+  border-radius: 2px;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s;
+}
+
+.nav__seg.is-past {
+  background: var(--slate);
+}
+
+.nav__seg.is-current {
+  border-color: var(--lime);
+}
+
+.nav__seg.is-hot {
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.nav__seg i {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--slate);
+}
+
+.nav__head {
+  position: absolute;
+  top: -7px;
+  bottom: -7px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--lime);
+}
+
+.nav__head b {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--lime);
+  transform: translateX(-50%);
+}
+
+/* Near either end the label hangs inward, so it never leaves the screen. */
+.nav__head.is-start b {
+  left: 0;
+  transform: none;
+}
+
+.nav__head.is-end b {
+  right: 0;
+  left: auto;
+  transform: none;
+}
+
+/* The drawings keep moving while the index is open. */
+.a-steam {
+  stroke-dasharray: 9 11;
+  animation: a-steam 1.6s linear infinite;
+}
+
+.a-type {
+  stroke-dasharray: 30;
+  animation: a-type 2.8s cubic-bezier(0.33, 0, 0.28, 1) infinite;
+}
+
+.a-lane {
+  animation: a-lane 0.55s linear infinite;
+}
+
+.a-spine {
+  transform-origin: 14px 64px;
+  animation: a-spine 2.8s cubic-bezier(0.33, 0, 0.13, 1) infinite;
+}
+
+.a-sweep {
+  transform-origin: 60px 36px;
+  animation: a-spin 2.4s linear infinite;
+}
+
+.a-blip {
+  transform-origin: 74px 24px;
+  animation: a-blip 2.4s ease-out infinite;
+}
+
+.a-key {
+  animation: a-key 2.4s cubic-bezier(0.33, 0, 0.13, 1) infinite;
+  animation-delay: calc(var(--i) * 0.4s);
+}
+
+.a-key rect {
+  animation: a-key-fill 2.4s step-end infinite;
+  animation-delay: calc(var(--i) * 0.4s);
+}
+
+.a-ring {
+  transform-origin: 60px 36px;
+  animation: a-ring 2s cubic-bezier(0.33, 0, 0.13, 1) infinite;
+}
+
+.a-ring--late {
+  animation-delay: 1s;
+}
+
+.a-code {
+  animation: a-lean 1.8s cubic-bezier(0.42, 0, 0.24, 1) infinite alternate;
+}
+
+@keyframes a-steam {
+  to {
+    stroke-dashoffset: 40;
+  }
+}
+
+@keyframes a-type {
+  0% {
+    stroke-dashoffset: 30;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes a-lane {
+  to {
+    stroke-dashoffset: -11;
+  }
+}
+
+@keyframes a-spine {
+  0%,
+  45%,
+  100% {
+    transform: none;
+  }
+  62%,
+  85% {
+    transform: translateY(-5px) rotate(-16deg);
+  }
+}
+
+@keyframes a-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes a-blip {
+  0%,
+  8% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  22% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  40% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes a-key {
+  0%,
+  16%,
+  100% {
+    transform: none;
+  }
+  5% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes a-key-fill {
+  0% {
+    fill: var(--lime);
+  }
+  14% {
+    fill: var(--ink);
+  }
+}
+
+@keyframes a-ring {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@keyframes a-lean {
+  to {
+    transform: translate(-1.5px, -3px);
+  }
+}
+
+@media (hover: none) {
+  .nav__hint {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 700px) {
+  .nav__bar,
+  .nav__rail {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .nav__list {
+    padding: 0 16px;
+  }
+
+  .nav__count,
+  .nav__hint {
+    display: none;
+  }
+
+  .nav__item {
+    grid-template-columns: 26px minmax(0, 1fr) 72px;
+    gap: 12px;
+  }
+
+  .nav__name {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav__title {
+    font-size: clamp(22px, 7.2vw, 40px);
+    font-stretch: 100%;
+  }
+
+  .nav__caption,
+  .nav__here {
+    font-size: 10px;
+  }
+
+  .nav__item[aria-current] .nav__here {
+    display: none;
+  }
+
+  .nav__item[aria-current] .nav__title {
+    color: var(--lime);
+  }
+
+  .nav__seg i {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__art *,
+  .eye {
+    animation: none !important;
+    transition: none !important;
+  }
+}

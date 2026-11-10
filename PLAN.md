@@ -565,4 +565,16 @@ Deployment: `.github/workflows/deploy.yml` builds and publishes to GitHub Pages 
 
 Tenth pass, 31 Oct: the preloader's step text is replaced by a percentage in the title's face, drawn from outlines in `index.html`. It runs on an OffscreenCanvas in a worker, so it cannot stall on the main thread. A test logged every value through a 1.5 s freeze with a frame every 18 ms or less. The number and the liquid share one steady pace of 125 per second, set by `PACE`, so the O always shows what the number says. Without a worker canvas it falls back to the main thread.
 
+Nav, 10 Nov: the **Eye Index**, picked by the user over a film-map rail and a keycap row.
+
+- The O of CODE sits at top centre as the menu button (`motion/nav.ts`, `styles/nav.css`). It stays hidden through the intro, pops in when the intro ends, and its pupil looks along the slot at rest.
+- Opening: the slot grows past the camera with a lime rim, like the O dive. The index sits on the ink it leaves, and its rows block-wipe on in lime.
+- Each row shows a plain title, a real count and a small moving drawing of the scene: the hero's extruded CODE, the desk, the road, the spines, the radar, the keys and the lime disc. A rail at the bottom shows every section at its true length, with a "you are here" playhead. The open eye looks at the hovered row, or the current one.
+- Picking a row seeks the film while the ink covers it, then the slot closes back into the eye. Each pick lands on a still frame: Start 0, About `handoff + ABOUT_BUILT`, Journey, Projects, Process and Skills on their title holds, Contact on the last frame. The hero CTA still goes to the first project.
+- The bottom bar now uses the same names (Start, About me, My journey, My projects, My process, My skills, Contact), and writes only when the section changes.
+- `chrome.ts`: a keyboard jump grows the cover from the link, not from the corner, and reduced motion jumps without the cover.
+- Fixed in passing: the hero's dot layer (`#anchor`) sat over the whole stage and swallowed clicks on both hero buttons. It is now `pointer-events: none`.
+- Verified in agent-browser: every row lands on its still (f0, 162, 360, 1030, 1638, 1936, 2386), from the top and from Contact. Also verified: the intro lock; keyboard open, pick, Escape and focus return; reduced motion (no iris, still landings); 390x844 and 360x640 with no overflow; the hero CTAs and name link; a clean console; and the production build (JS 116 KB gzip).
+- Not yet checked: Safari, Firefox, real phones, and frame rate in a visible window while the slot scales. Its box-shadow repaints every frame.
+
 Load time, 31 Oct. The user saw about 5 s when headless Chrome reported about 1.4 s. Measure load and frame rate in a visible Chrome window: headless hid this entirely. A trace showed 6,280 forced layouts during build, each re-shaping 37 text nodes, for 12 of 18 seconds. The cause was the intro's text wall being displayed while later scenes were still building. It now appears after the last scene is built. Visible Chrome went from 11 to 13 s to about 1.6 s on the dev server and about 1.3 s for production. `performance.mark` entries named `load:*` time each stage. Hidden windows are heavily throttled, so test with the backgrounding flags off.
